@@ -15,9 +15,9 @@ jobs:
       image: crystallang/crystal
 
     steps:
+    - name: Get specific version CMake, v3.21.2
+      uses: lukka/get-cmake@v3.21.2
     - uses: actions/checkout@v2
-    - name: Setup cmake
-      run: apt-get install cmake gcc g++
     - name: Use cmake
       run: cmake --version
     - name: Install dependencies
