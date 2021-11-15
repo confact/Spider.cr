@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe Scraper do
+describe Spider do
   # TODO: Write tests
 
   it "works" do
