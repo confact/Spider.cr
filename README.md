@@ -73,13 +73,14 @@ This is working and is doing pretty good on some production systems. But it coul
 * failure handling, have a custom way to handle them in the start block.
 * More storage possibility, and a way to set it in start block.
 * It is keeping up and running even if it is done. As the while check seems to not work fully.
+* robots.txt support to respect websites wishes.
 
 
 ## Contributing
 
 Would love some contributions. As example the concurrency support, as I am new to that.
 
-1. Fork it (<https://github.com/confact/spider/fork>)
+1. Fork it (<https://github.com/confact/spider.cr/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
