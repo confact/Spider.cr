@@ -11,7 +11,7 @@ This is heavily inspired by the ruby gem `spider`: https://github.com/johnnagro/
    ```yaml
    dependencies:
      spider:
-       github: confact/spider
+       github: confact/spider.cr
    ```
 
 2. Run `shards install`
