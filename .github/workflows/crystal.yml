@@ -15,6 +15,12 @@ jobs:
       image: crystallang/crystal
 
     steps:
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@v1.9
+      with:
+        cmake-version: '3.16.x'
+    - name: Use cmake
+      run: cmake --version
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: shards install
