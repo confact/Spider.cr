@@ -58,13 +58,10 @@ class Spider
   private def spawn_workers
     return if every_page.nil?
 
-    puts "every_page is not nil"
-
     @amount_workers.times do
       spawn do
         until @channel.closed?
           data, url = @channel.receive
-          puts "got inside #{url}"
           every_page.try(&.call(data, url))
         end
       end
