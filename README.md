@@ -38,8 +38,8 @@ Spider.start("https://google.com") do |s|
 
   s.every_page = ->(data : Lexbor::Parser, url : URI) {
     # run either the whole data process here or move it to another class and call it here,
-    # we give you the Lexbor::Parser class directly so you can use it freely,
-    # and the url to handling different process depending on url getting process.
+    # we give you the Lexbor::Parser instance directly so you can use it freely,
+    # and the url to route to correct processing depending on url.
   }
 end
 ```
