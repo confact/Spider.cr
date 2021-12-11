@@ -1,3 +1,5 @@
+require "file_utils"
+
 class VisitedFile
 
   @filepath : String
