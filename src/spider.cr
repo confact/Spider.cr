@@ -1,5 +1,7 @@
 require "lexbor"
 require "uri"
+require "log"
+require "http/client"
 require "./checked/**"
 require "./next_urls/**"
 class SpiderURLException < Exception; end
@@ -20,7 +22,7 @@ class Spider
   @start_url : URI
 
   def self.start(start_url : String)
-    Log.info { "RUNNING SPIDER ON #{Crystal.env.name}"}
+    Log.info { "RUNNING SPIDER ON #{ENV["CRYSTAL_ENV"]? || "development"}"}
     instance = new(URI.parse(start_url))
     yield instance
     instance.start!
@@ -60,9 +62,13 @@ class Spider
 
     @amount_workers.times do
       spawn do
-        until @channel.closed?
-          data, url = @channel.receive
-          every_page.try(&.call(data, url))
+        while !@channel.closed?
+          begin
+            data, url = @channel.receive
+            every_page.try(&.call(data, url))
+          rescue Channel::ClosedError
+            break
+          end
         end
       end
     end
@@ -81,10 +87,13 @@ class Spider
         data = Lexbor::Parser.new(response.body)
         call_page_commands(data, url)
         add_checked(url)
+
+        @channel.close if @next_urls.empty?
       rescue e : SpiderURLException
         Log.error(exception: e) { "Error" }
         next
       end
+      @channel.close if @next_urls.empty?
       break if @next_urls.empty? && @channel.closed?
     end
   end
@@ -120,9 +129,9 @@ class Spider
 
   def get_response(url : String)
     urler = if @prefix_url
-      "#{@prefix_url}#{url.to_s}"
+      "#{@prefix_url}#{url}"
     else
-      url.to_s
+      url
     end
     uri = URI.parse(urler)
     p! uri
