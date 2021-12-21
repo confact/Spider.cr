@@ -23,10 +23,5 @@ jobs:
         uses: crystal-lang/install-crystal@v1
       - name: Cache shards
         uses: actions/cache@v2
-        with:
-          path: ./src/ext/lexbor-c
-          key: ${{ runner.os }}-makefile-${{ hashFiles('./src/ext/Makefile') }}
-      - name: Make
-        run: make package
       - name: Run tests
         run: crystal spec
