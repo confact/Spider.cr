@@ -30,5 +30,7 @@ jobs:
           path: ~/.cache/shards
           key: ${{ runner.os }}-shards-${{ hashFiles('shard.yml') }}
           restore-keys: ${{ runner.os }}-shards-
+      - name: Install shards
+        run: shards update
       - name: Run tests
         run: crystal spec
