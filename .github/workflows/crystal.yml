@@ -8,19 +8,25 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
-    container:
-      image: crystallang/crystal
-
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}  
     steps:
-    - name: Get CMake
-      uses: symbitic/install-cmake@master
-    - uses: actions/checkout@v2
-    - name: Use cmake
-      run: cmake --version
-    - name: Install dependencies
-      run: shards install
-    - name: Run tests
-      run: crystal spec
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.9
+        with:
+          cmake-version: '3.16.x'
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+      - name: Cache shards
+        uses: actions/cache@v2
+        with:
+          path: ./src/ext/lexbor-c
+          key: ${{ runner.os }}-makefile-${{ hashFiles('./src/ext/Makefile') }}
+      - name: Make
+        run: make package
+      - name: Run tests
+        run: crystal spec
